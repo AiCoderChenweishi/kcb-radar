@@ -43,3 +43,9 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ---- 问答台账（运行日志，含真实提问与回答）----
+# 曾经漏进过一次公开仓库：这条规则是用 bash 的 Add-Content 追加的，
+# 而那条命令整体被安全策略拦下 → 规则从未落盘 → git add -A 又把它加了回去。
+# **教训：.gitignore 的改动要用能确认落地的方式写，并随后 check-ignore 验一次。**
+data/ask-log.jsonl
