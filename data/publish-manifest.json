@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-29",
+  "at": "2026-10-29T01:41:55.136Z",
+  "packagePath": "C:\\Users\\wschen\\.minimax\\agents\\mavis\\miniapps\\minimax-bot\\miniapps\\kcb-intel",
+  "clientDir": "C:\\Users\\wschen\\.minimax\\agents\\mavis\\miniapps\\minimax-bot\\miniapps\\kcb-intel\\miniapp\\client",
+  "dataFile": "C:\\Users\\wschen\\.minimax\\agents\\mavis\\miniapps\\minimax-bot\\miniapps\\kcb-intel\\miniapp\\client\\data\\latest.json",
+  "dataDate": "2026-10-29",
+  "companies": 619,
+  "focus": 229,
+  "assetToken": "536ad29f",
+  "dataStaged": true,
+  "dataStagedAt": "2026-10-29T01:41:55.136Z",
+  "runtimeServesFromDisk": true,
+  "assetsChanged": true,
+  "republishRequired": true,
+  "publishCommand": "miniapp publish --plugin-id kcb-intel --source-path <packagePath>"
+}

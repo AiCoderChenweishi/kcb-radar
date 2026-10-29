@@ -1,0 +1,45 @@
+# ============================================================
+#  科创板每日情报雷达 · Git 忽略规则
+#
+#  最重要的一条：**密钥和原始数据不进仓库**。
+#  data/ 下有 radar.env（模型 key / 写接口令牌）和 data/daily（9 份数据集，57MB）。
+#  这两样只在运行机器上，不进版本库。
+# ============================================================
+
+# ---- 密钥与本地配置（绝不入库）----
+data/radar.env
+data/*.env
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# ---- 采集产物与数据（体积大、可重新生成）----
+data/daily/
+data/raw/
+data/samples/
+data/news-cache*.json
+data/quotes.json
+data/profiles.json
+data/status*.json
+out/
+release/
+
+# ---- 日志与临时文件 ----
+*.log
+*.log.*
+.tmp/
+tmp/
+npm-debug.log*
+
+# ---- 依赖 ----
+node_modules/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

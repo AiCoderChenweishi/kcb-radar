@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>科创板每日情报雷达</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="brand">
+      <span class="brand-mark"></span>
+      <div>
+        <h1>科创板每日情报雷达</h1>
+        <p class="brand-sub">全网要闻 · 财务摘要 · 估值 · 热点 · 券商观点</p>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <label class="field">
+      <span>数据日期</span>
+      <select id="dateSelect"></select>
+    </label>
+    <div class="status-chip" id="statusChip">
+      <span class="dot"></span><span id="statusText">加载中…</span>
+    </div>
+    <span class="lan-chip" id="lanChip" title="局域网访问地址（供同事在自己电脑的浏览器里打开）">局域网 —</span>
+    <button class="btn ghost" id="refreshBtn" title="重新拉取最新数据">刷新</button>
+  </div>
+</header>
+
+<!-- 全局筛选：行业 + 日期范围（可多选、可跨天） -->
+<section class="filterbar" id="filterBar">
+  <div class="fb-title">
+    <b>整体筛选</b>
+    <span class="fb-hint">按<b>发布日期</b>筛选（不是按快照日）；行业与日期范围可组合，作用于要闻 / 券商观点 / 公告 / 全量数据</span>
+  </div>
+  <div class="fb-fields">
+    <label class="field">
+      <span>起始日期</span>
+      <input type="date" id="fltFrom" />
+    </label>
+    <label class="field">
+      <span>结束日期</span>
+      <input type="date" id="fltTo" />
+    </label>
+    <div class="fb-quick">
+      <button class="btn tiny" data-days="3">近 3 天</button>
+      <button class="btn tiny" data-days="7">近 7 天</button>
+      <button class="btn tiny" data-days="0">全部</button>
+    </div>
+    <div class="fb-industries">
+      <label class="field">
+        <span>行业（点标签选中，可多选；不选＝全部 619 家）</span>
+        <input type="search" id="fltIndustrySearch" placeholder="输入行业名过滤，如「药」「半导体」…" autocomplete="off" />
+      </label>
+      <div class="chip-wrap">
+        <div class="chip-row" id="fltIndustryChips"></div>
+        <div class="fb-industry-meta">
+          <span id="fltIndustryMeta">未选行业＝全部 619 家</span>
+          <button class="btn tiny ghost" id="fltIndustryClear">清空选择</button>
+        </div>
+      </div>
+    </div>
+    <div class="fb-actions">
+      <button class="btn primary" id="fltApply">应用</button>
+      <button class="btn ghost" id="fltReset">重置</button>
+    </div>
+  </div>
+  <div class="fb-status" id="fltStatus">未启用区间筛选：当前显示「最新快照」的全部历史要闻；要按发布日期筛一段区间，请在上面选日期并点应用</div>
+  <div class="fb-scope" id="fltScope">筛选生效范围：要闻 · 公告 · 券商观点 · 全量数据 · 估值 · 财务 · 卖方覆盖 · 高信号公司 · 板块焦点 · 今日要闻总结｜今日全景的<b>市场宽度 / 指数 / 事件分布</b>与<b>医药专章</b>为全板口径，不随筛选收窄</div>
+  <div class="fb-scope" id="srcScope"></div>
+</section>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="overview">今日全景</button>
+  <button class="tab" data-tab="signal">高信号公司</button>
+  <button class="tab" data-tab="sectors">板块焦点</button>
+  <button class="tab" data-tab="news">要闻</button>
+  <button class="tab" data-tab="research">券商观点</button>
+  <button class="tab" data-tab="coverage">卖方覆盖</button>
+  <button class="tab" data-tab="valuation">估值</button>
+  <button class="tab" data-tab="financial">财务</button>
+  <button class="tab" data-tab="notice">公告</button>
+  <button class="tab" data-tab="all">全量数据</button>
+  <button class="tab" data-tab="ask">CFO 问答</button>
+</nav>
+
+<main id="main">
+  <!-- 今日全景 -->
+  <section class="panel active" id="panel-overview">
+    <div class="card">
+      <div class="card-head">
+        <h2>今日要闻总结</h2>
+        <span class="src" id="digestSrc">—</span>
+      </div>
+      <div id="digestBody"></div>
+    </div>
+    <div class="stat-grid" id="marketStats"></div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-head">
+          <h2>市场宽度</h2>
+          <span class="src" id="breadthSrc"></span>
+        </div>
+        <div id="breadthBody"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h2>指数与总量</h2>
+          <span class="src" id="indexSrc"></span>
+        </div>
+        <div id="indexBody"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h2>科创板今日事件分布</h2>
+        <span class="src">按公告/要闻正文识别，覆盖 619 家</span>
+      </div>
+      <div id="eventBody"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h2>卖方关注行业</h2>
+        <span class="src" id="industrySrc"></span>
+      </div>
+      <div id="industryBody"></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h2>市场快讯</h2>
+        <span class="src">东方财富 7×24</span>
+      </div>
+      <div id="trendingBody"></div>
+    </div>
+  </section>
+
+  <!-- 高信号公司 -->
+  <section class="panel" id="panel-signal">
+    <div class="card-head standalone">
+      <h2>今日高信号公司</h2>
+      <span class="src" id="signalSrc"></span>
+    </div>
+    <p class="hint">无人工关注池。排名由可验证事实自动计算：券商评级与目标价、重大公告、业绩预告、PE 历史分位极值、当日大幅波动、增速突变。</p>
+    <div id="signalBody"></div>
+  </section>
+
+  <!-- 板块焦点与医药专章 -->
+  <section class="panel" id="panel-sectors">
+    <div class="card-head standalone">
+      <h2>板块焦点与医药专章</h2>
+      <span class="src" id="sectorsSrc">—</span>
+    </div>
+    <p class="hint">只给够得上"事"的板块：重要度 = 事件方向合计×2 + 公告数×0.3 + 要闻数×0.3 + 异动家数×3 + 研报覆盖数×0.5。医药板块单列专章。</p>
+    <div id="sectorsBody"></div>
+  </section>
+
+  <!-- 要闻 -->
+  <section class="panel" id="panel-news">
+    <div class="toolbar">
+      <input type="search" id="newsSearch" placeholder="按公司 / 标题关键词筛选…" />
+      <label class="chk"><input type="checkbox" id="newsLatestOnly" /> 仅看最新数据日</label>
+      <label class="chk"><input type="checkbox" id="newsResearchOnly" /> 仅看券商研报</label>
+      <span class="count" id="newsCount"></span>
+    </div>
+    <div id="newsBody"></div>
+  </section>
+
+  <!-- 券商观点 -->
+  <section class="panel" id="panel-research">
+    <div class="toolbar">
+      <input type="search" id="researchSearch" placeholder="按公司 / 券商 / 评级筛选…" />
+      <label class="chk"><input type="checkbox" id="researchChanged" /> 仅看观点变化</label>
+      <span class="count" id="researchCount"></span>
+    </div>
+    <div id="researchBody"></div>
+  </section>
+
+  <!-- 卖方覆盖 -->
+  <section class="panel" id="panel-coverage">
+    <div class="card-head standalone">
+      <h2>卖方覆盖全景</h2>
+      <span class="src" id="coverageSrc"></span>
+    </div>
+    <p class="hint">近 90 天窗口内被券商研报覆盖的科创板公司。评级、目标价、三年 EPS 预测与目标价空间，用于判断市场分歧与预期差。</p>
+    <div class="toolbar">
+      <input type="search" id="covSearch" placeholder="按公司 / 券商筛选…" />
+      <div class="seg" id="covSeg">
+        <button class="seg-btn active" data-filter="all">全部</button>
+        <button class="seg-btn" data-filter="buy">买入/增持</button>
+        <button class="seg-btn" data-filter="tp">有目标价</button>
+        <button class="seg-btn" data-filter="upgrade">评级上调</button>
+      </div>
+      <span class="count" id="covCount"></span>
+    </div>
+    <div id="covBody"></div>
+  </section>
+
+  <!-- 估值 -->
+  <section class="panel" id="panel-valuation">
+    <div class="toolbar">
+      <input type="search" id="valSearch" placeholder="按公司筛选…" />
+      <div class="seg" id="valSeg">
+        <button class="seg-btn active" data-filter="all">全部</button>
+        <button class="seg-btn" data-filter="high">PE 分位 ≥95%</button>
+        <button class="seg-btn" data-filter="low">PE 分位 ≤10%</button>
+        <button class="seg-btn" data-filter="large">市值 ≥200亿</button>
+      </div>
+      <span class="count" id="valCount"></span>
+    </div>
+    <div id="valBody"></div>
+  </section>
+
+  <!-- 财务 -->
+  <section class="panel" id="panel-financial">
+    <div class="toolbar">
+      <input type="search" id="finSearch" placeholder="按公司筛选…" />
+      <div class="seg" id="finSeg">
+        <button class="seg-btn active" data-filter="all">全部</button>
+        <button class="seg-btn" data-filter="up">营收高增</button>
+        <button class="seg-btn" data-filter="down">营收大幅下滑</button>
+      </div>
+      <span class="count" id="finCount"></span>
+    </div>
+    <div id="finBody"></div>
+  </section>
+
+  <!-- 公告 -->
+  <section class="panel" id="panel-notice">
+    <div class="toolbar">
+      <input type="search" id="noticeSearch" placeholder="按公司 / 公告标题筛选…" />
+      <span class="count" id="noticeCount"></span>
+    </div>
+    <div id="noticeBody"></div>
+  </section>
+
+  <!-- 全量 -->
+  <section class="panel" id="panel-all">
+    <div class="toolbar">
+      <input type="search" id="allSearch" placeholder="搜索 619 家科创板公司（代码或简称）…" />
+      <select id="allIndustry"><option value="">全部行业</option></select>
+      <label class="chk"><input type="checkbox" id="allWithNews" /> 今日有动态</label>
+      <span class="count" id="allCount"></span>
+    </div>
+    <div id="allBody"></div>
+    <div class="pager" id="allPager"></div>
+  </section>
+
+  <!-- CFO 问答 -->
+  <section class="panel" id="panel-ask">
+    <div class="card">
+      <div class="card-head">
+        <h2>CFO 问答</h2>
+        <span class="src" id="askSrc">—</span>
+      </div>
+      <p class="ask-hint">
+        回答只依据科创板雷达的当日数据（619 家的要闻／研报／公告／财务／估值）与项目口径；
+        材料没覆盖的会明确说明"本期数据没有覆盖"。每条依据都可回查。
+      </p>
+      <div class="ask-box">
+        <textarea id="askInput" rows="3" placeholder="例如：睿创微纳最近的业绩和研报怎么看？"></textarea>
+        <div class="ask-actions">
+          <button class="btn primary" id="askBtn">提问</button>
+          <button class="btn ghost" id="askCopy" hidden>复制提示词</button>
+          <span class="count" id="askStatus"></span>
+        </div>
+      </div>
+      <div class="ask-samples" id="askSamples"></div>
+    </div>
+    <div id="askBody"></div>
+  </section>
+</main>
+
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer" id="drawer" hidden>
+  <div class="drawer-head">
+    <div>
+      <h2 id="drawerTitle">—</h2>
+      <p id="drawerSub">—</p>
+    </div>
+    <button class="btn ghost" id="drawerClose">关闭</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

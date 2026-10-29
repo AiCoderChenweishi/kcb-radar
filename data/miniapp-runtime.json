@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-10-21T22:55:00+08:00",
+  "source": "宿主工具 miniapp inspect / publish 实测输出（由 Agent 写入本快照文件供验收脚本引用）",
+  "pluginId": "kcb-intel",
+  "sourceKind": "local",
+  "displayName": "kcb-intel",
+  "runtime": {
+    "kind": "process",
+    "status": "running"
+  },
+  "run": {
+    "runId": "dc8dd916-068a-42b1-b742-8d3a9285ccf9",
+    "preparationStartedAtMs": 1792594493056,
+    "readyAtMs": 1792594493723,
+    "current": true
+  },
+  "runtimeReady": true,
+  "dataFlow": {
+    "runtimeServesFromDisk": true,
+    "evidence": "miniapp/node/server.mjs 每个 GET 请求都用 readFile 读盘，响应头 cache-control: no-cache",
+    "implication": "每日 publish_board.cjs 写入 data/latest.json 后刷新浏览器即生效，无需重新 publish"
+  },
+  "notes": [
+    "2026-10-21 22:54 因客户端资源变更（app.js/style.css 新增券商观点原文展示）执行了 miniapp publish，运行时重启并通过 runtime.ready。",
+    "manifest 的 republishRequired 由 assetsChanged 与 client 资源哈希基线比对得出：纯数据更新为 false，改了前端代码为 true（需重启运行时）。当前 assetsChanged=false、republishRequired=false。",
+    "客户端数据 latest.json：619 家 / focusMatrix 229 家，其中 228 家带券商观点原文（sellSideViewHas）、28 家 PE 分位历史不足名义窗口（界面会标出实际天数）。"
+  ]
+}

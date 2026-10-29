@@ -1,0 +1,17 @@
+{
+  "name": "star-market-radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "科创板每日情报雷达：全网采集 619 家科创板公司的要闻、财务摘要、估值、热点新闻与券商研报观点，产出可下钻的 Web 看板",
+  "main": "src/server.js",
+  "scripts": {
+    "collect": "node scripts/run_collect.cjs",
+    "serve": "node src/server.js",
+    "start": "node scripts/run_collect.cjs && node src/server.js",
+    "probe": "node scripts/probe.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

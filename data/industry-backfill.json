@@ -1,0 +1,162 @@
+{
+  "at": "2026-10-22T06:54:33.175Z",
+  "source": "datacenter RPT_LICO_FN_CPD.BOARD_NAME",
+  "taxonomy": "申万二级",
+  "datasets": [
+    {
+      "date": "2026-10-22",
+      "changed": 0,
+      "industriesBefore": 46,
+      "industriesAfter": 46,
+      "samples": []
+    },
+    {
+      "date": "2026-10-21",
+      "changed": 574,
+      "industriesBefore": 76,
+      "industriesAfter": 46,
+      "samples": [
+        {
+          "code": "688001.SH",
+          "name": "华兴源创",
+          "from": "其他专用机械",
+          "to": "通用设备",
+          "source": "pinned"
+        },
+        {
+          "code": "688002.SH",
+          "name": "睿创微纳",
+          "from": "电子设备制造",
+          "to": "军工电子Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688003.SH",
+          "name": "天准科技",
+          "from": "仪器仪表",
+          "to": "自动化设备",
+          "source": "pinned"
+        },
+        {
+          "code": "688004.SH",
+          "name": "博汇科技",
+          "from": "其他软件服务",
+          "to": "IT服务Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688005.SH",
+          "name": "容百科技",
+          "from": "电池材料",
+          "to": "电池",
+          "source": "pinned"
+        },
+        {
+          "code": "688006.SH",
+          "name": "杭可科技",
+          "from": "其他专用机械",
+          "to": "电池",
+          "source": "pinned"
+        },
+        {
+          "code": "688007.SH",
+          "name": "光峰科技",
+          "from": "视听器材",
+          "to": "消费电子",
+          "source": "pinned"
+        },
+        {
+          "code": "688008.SH",
+          "name": "澜起科技",
+          "from": "电子设备制造",
+          "to": "半导体",
+          "source": "pinned"
+        },
+        {
+          "code": "688009.SH",
+          "name": "中国通号",
+          "from": "轨道交通设备",
+          "to": "轨交设备Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688010.SH",
+          "name": "福光股份",
+          "from": "光学元件",
+          "to": "光学光电子",
+          "source": "pinned"
+        },
+        {
+          "code": "688011.SH",
+          "name": "新光光电",
+          "from": "电子设备制造",
+          "to": "军工电子Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688012.SH",
+          "name": "中微公司",
+          "from": "集成电路",
+          "to": "半导体",
+          "source": "pinned"
+        },
+        {
+          "code": "688015.SH",
+          "name": "交控科技",
+          "from": "其他交运设备",
+          "to": "轨交设备Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688017.SH",
+          "name": "绿的谐波",
+          "from": "其他通用机械",
+          "to": "自动化设备",
+          "source": "pinned"
+        },
+        {
+          "code": "688018.SH",
+          "name": "乐鑫科技",
+          "from": "集成电路",
+          "to": "半导体",
+          "source": "pinned"
+        },
+        {
+          "code": "688019.SH",
+          "name": "安集科技",
+          "from": "半导体材料",
+          "to": "电子化学品Ⅱ",
+          "source": "pinned"
+        },
+        {
+          "code": "688020.SH",
+          "name": "方邦股份",
+          "from": "电子元件",
+          "to": "元件",
+          "source": "pinned"
+        },
+        {
+          "code": "688021.SH",
+          "name": "奥福科技",
+          "from": "环保设备",
+          "to": "汽车零部件",
+          "source": "pinned"
+        },
+        {
+          "code": "688022.SH",
+          "name": "ST瀚川",
+          "from": "其他专用机械",
+          "to": "专用设备",
+          "source": "pinned"
+        },
+        {
+          "code": "688023.SH",
+          "name": "安恒信息",
+          "from": "其他软件服务",
+          "to": "软件开发",
+          "source": "pinned"
+        }
+      ]
+    }
+  ]
+}

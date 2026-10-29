@@ -1,0 +1,54 @@
+{
+  "observedAt": "2026-10-21T22:50:00+08:00",
+  "source": "宿主工具 minimax-bot list_schedules / create_schedule 实测输出（由 Agent 写入本快照文件供验收脚本引用）",
+  "count": 3,
+  "changeNote": "2026-10-21 22:45 重建 08:50 一条（MiniMax Bot 侧没有 update_schedule，只能 delete + create）。本次更新：第 2 层券商观点原文覆盖从 53 家扩到 228 家（被覆盖公司 99.6%），prompt 里的硬编码数字同步更新，并加入「隔夜至今」口径提醒。",
+  "schedules": [
+    {
+      "schedule_id": "sch_7781ac319ac0",
+      "name": "科创板数据层巡检",
+      "bot_id": "bot_69b0c576d481",
+      "bot_name": "科创数据官",
+      "kind": "daily",
+      "time": "08:30",
+      "enabled": true,
+      "next_run": "2026-10-22T00:30:00.000Z",
+      "reads": "web/out/digest-<日期>.json",
+      "observedDurationMin": 10
+    },
+    {
+      "schedule_id": "sch_04c3cd9d96af",
+      "name": "科创板产业舆情研判",
+      "bot_id": "bot_f329c092101b",
+      "bot_name": "产业舆情官",
+      "kind": "daily",
+      "time": "08:50",
+      "enabled": true,
+      "next_run": "2026-10-22T00:50:00.000Z",
+      "reads": "web/out/digest-<日期>.json",
+      "observedDurationMin": 26
+    },
+    {
+      "schedule_id": "sch_3b039e9e7541",
+      "name": "科创板每日晨报成稿与发布",
+      "bot_id": "bot_475614a6b4e8",
+      "bot_name": "情报主编",
+      "kind": "daily",
+      "time": "09:40",
+      "enabled": true,
+      "next_run": "2026-10-22T01:40:00.000Z",
+      "reads": "web/out/digest-<日期>.json",
+      "observedDurationMin": 33
+    }
+  ],
+  "notes": [
+    "三个调度全部读取摘要层 out/digest-<日期>.json（约 860KB），不读 5.3MB 原始 JSON。",
+    "节律按实测耗时排：07:30 采集(91s) → 08:05 看板 → 08:30 巡检(10min) → 08:50 舆情(26min) → 09:40 晨报(33min)。晨报原定 09:10 会与 08:50 段竞态（舆情 09:16 才写完），故后移。",
+    "09:40 段负责调用 scripts/publish_brief.cjs 发布到飞书「信息台」，并调用 scripts/publish_board.cjs 同步 Mini App 数据。两个脚本都带 md_guard 防护（发前把正文 ASCII ~ 换成 en dash，发后回读确认 <del> 为 0）。",
+    "三个 Bot 的 instructions 已同步更新（修正 224→229、617/255→618/249、08:40→09:10），并写入硬边界：不得自建调度、不得改交付落点、不得新建第二套采集管线、不得用抽样数据覆盖全量数据。",
+    "2026-10-21 21:09 曾发生真实事故：08:30 段按旧提示执行 run_collect.cjs --limit=40，把 619 家全量数据覆盖成 40 家。已修复为隔离写入（data/samples/）并实测验证。",
+    "2026-10-21 21:25 两个 Windows 计划任务首次真跑：MavisKcbRadarCollect 与 MavisKcbRadarWeb 的 Last Result 均为 0。",
+    "2026-10-21 22:2x 用两份真实数据集（10-21 与模拟的 10-22）验证跨日差分：available=true、检出 10 条涨跌幅异动与事件分布变化；模拟数据已清理。",
+    "2026-10-21 22:45 研报正文抓取扩到全量：目标 231 篇 → 成功 230 篇（99.6%），第 2 层观点原文覆盖 27 家 → 228 家。"
+  ]
+}
